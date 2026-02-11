@@ -32,6 +32,18 @@ public final class BedWarsUtil {
 			}
 			return null;
 		}
+
+		public static TeamColor fromColorCode(final String colorCode) {
+			if (colorCode == null) {
+				return null;
+			}
+			for (TeamColor color : values()) {
+				if (colorCode.equals(color.colorCode)) {
+					return color;
+				}
+			}
+			return null;
+		}
 	}
 	public static String getFormattedTeamName(final EntityPlayer player) {
 		TeamColor color = getTeamColor(player);
