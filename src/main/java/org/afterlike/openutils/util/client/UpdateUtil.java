@@ -19,8 +19,9 @@ public class UpdateUtil {
 	}
 
 	private static void check() {
+		HttpURLConnection conn = null;
 		try {
-			HttpURLConnection conn = (HttpURLConnection) new URL(API_URL).openConnection();
+			conn = (HttpURLConnection) new URL(API_URL).openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("User-Agent", "OpenUtils/" + OpenUtils.get().getVersion());
 			conn.setRequestProperty("Accept", "application/vnd.github+json");
@@ -37,6 +38,10 @@ public class UpdateUtil {
 			}
 		} catch (Throwable e) {
 			logger.warn("Update check failed: {}", e.getMessage());
+		} finally {
+			if (conn != null) {
+				conn.disconnect();
+			}
 		}
 	}
 

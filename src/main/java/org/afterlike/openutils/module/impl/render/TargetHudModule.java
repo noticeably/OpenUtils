@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import org.afterlike.openutils.event.handler.EventHandler;
 import org.afterlike.openutils.event.impl.AttackEntityEvent;
 import org.afterlike.openutils.event.impl.RenderOverlayEvent;
+import org.afterlike.openutils.event.impl.WorldLoadEvent;
 import org.afterlike.openutils.module.api.Module;
 import org.afterlike.openutils.module.api.ModuleCategory;
 import org.afterlike.openutils.module.api.hud.HudModule;
@@ -49,6 +50,18 @@ public class TargetHudModule extends Module implements HudModule {
 		showHead = this.registerSetting(new BooleanSetting("Show Head", true));
 		showOutline = this.registerSetting(new BooleanSetting("Show Outline", false));
 		showIndicator = this.registerSetting(new BooleanSetting("Show Indicator", true));
+	}
+
+	@Override
+	protected void onDisable() {
+		target = null;
+		previousTarget = null;
+	}
+
+	@EventHandler
+	private void onWorldLoad(final WorldLoadEvent event) {
+		target = null;
+		previousTarget = null;
 	}
 
 	@EventHandler

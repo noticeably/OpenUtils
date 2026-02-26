@@ -41,8 +41,9 @@ public class VPNStatusModule extends Module {
 			return t;
 		});
 		executor.execute(() -> {
+			HttpURLConnection conn = null;
 			try {
-				HttpURLConnection conn = (HttpURLConnection) new URL(API_URL).openConnection();
+				conn = (HttpURLConnection) new URL(API_URL).openConnection();
 				conn.setRequestMethod("GET");
 				conn.setConnectTimeout(3000);
 				conn.setReadTimeout(3000);
@@ -50,14 +51,14 @@ public class VPNStatusModule extends Module {
 				if (code != 200) {
 					throw new RuntimeException("HTTP error: " + code);
 				}
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(conn.getInputStream()));
 				StringBuilder response = new StringBuilder();
-				String line;
-				while ((line = reader.readLine()) != null) {
-					response.append(line);
+				try (BufferedReader reader = new BufferedReader(
+						new InputStreamReader(conn.getInputStream()))) {
+					String line;
+					while ((line = reader.readLine()) != null) {
+						response.append(line);
+					}
 				}
-				reader.close();
 				JsonObject json = JsonParser.parseString(response.toString()).getAsJsonObject();
 				if (!"success".equalsIgnoreCase(json.get("status").getAsString())) {
 					ClientUtil.sendMessage("Failed success...");
@@ -80,6 +81,9 @@ public class VPNStatusModule extends Module {
 				ClientUtil.sendMessage("&cFailed to check VPN status.");
 				LogManager.getLogger().warn(e.getMessage(), e);
 			} finally {
+				if (conn != null) {
+					conn.disconnect();
+				}
 				executor.shutdown();
 			}
 		});
