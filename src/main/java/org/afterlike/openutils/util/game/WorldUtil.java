@@ -16,6 +16,8 @@ public class WorldUtil {
 	private static int lastTick = -1;
 	public static List<String> getScoreboard() {
 		if (mc.theWorld == null) {
+			cachedScoreboard = Collections.emptyList();
+			lastTick = -1;
 			return Collections.emptyList();
 		}
 		if (mc.thePlayer != null && mc.thePlayer.ticksExisted == lastTick

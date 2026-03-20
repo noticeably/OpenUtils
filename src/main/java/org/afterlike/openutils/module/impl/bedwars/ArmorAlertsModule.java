@@ -11,6 +11,7 @@ import net.minecraft.network.play.server.S04PacketEntityEquipment;
 import net.minecraft.util.EnumChatFormatting;
 import org.afterlike.openutils.event.handler.EventHandler;
 import org.afterlike.openutils.event.impl.ReceivePacketEvent;
+import org.afterlike.openutils.event.impl.WorldLoadEvent;
 import org.afterlike.openutils.module.api.Module;
 import org.afterlike.openutils.module.api.ModuleCategory;
 import org.afterlike.openutils.module.api.setting.impl.BooleanSetting;
@@ -155,6 +156,11 @@ public class ArmorAlertsModule extends Module {
 
 	private String getDistanceString(final EntityPlayer player) {
 		return new DecimalFormat("#").format(player.getDistanceToEntity(mc.thePlayer)) + "m";
+	}
+
+	@EventHandler
+	private void onWorldLoad(final WorldLoadEvent event) {
+		playerArmor.clear();
 	}
 
 	@Override

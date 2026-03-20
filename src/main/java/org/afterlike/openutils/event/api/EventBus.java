@@ -131,6 +131,7 @@ public final class EventBus {
 		for (final List<EventExecutable> executables : executableMap.values()) {
 			executables.removeIf(e -> e.getParent().equals(object));
 		}
+		executableMap.values().removeIf(List::isEmpty);
 	}
 
 	/**
