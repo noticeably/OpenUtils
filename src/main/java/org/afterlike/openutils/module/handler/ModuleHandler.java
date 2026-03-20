@@ -46,6 +46,7 @@ public class ModuleHandler {
 		// world
 		this.register(new TimeChangerModule());
 		this.register(new WeatherModule()); // TODO: impl
+		this.register(new AnticheatModule());
 		// hypixel
 		this.register(new AutoGGModule());
 		this.register(new DenickerModule());
